@@ -215,7 +215,7 @@ function form() {
     const body = `${d.get('message')}\n\n— ${d.get('name')} (${d.get('email')})`;
     note.style.color = '';
     note.textContent = 'Opening your email app…';
-    location.href = `mailto:info.mmc@mmcgroup-egy.com?subject=${encodeURIComponent('Enquiry from ' + d.get('name'))}&body=${encodeURIComponent(body)}`;
+    location.href = `mailto:info@mmc-agency.com?subject=${encodeURIComponent('Enquiry from ' + d.get('name'))}&body=${encodeURIComponent(body)}`;
   });
 }
 

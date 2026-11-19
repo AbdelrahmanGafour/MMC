@@ -146,13 +146,13 @@ function form() {
     e.preventDefault();
     let ok = true;
     $$('input, textarea', f).forEach((i) => {
-      const bad = !i.value.trim() || (i.type === 'email' && !/^\S+@\S+\.\S+$/.test(i.value));
+      const bad = !i.value.trim() || (i.type === 'email' && !/^\S+@\S+\.\S+$/.test(i.value)) || (i.type === 'tel' && !/^[+\d][\d\s()-]{6,}$/.test(i.value.trim()));
       i.setAttribute('aria-invalid', bad);
       if (bad) ok = false;
     });
-    if (!ok) { note.style.color = '#ff9b9b'; note.textContent = 'Please complete all fields with a valid email.'; return; }
+    if (!ok) { note.style.color = '#ff9b9b'; note.textContent = 'Please complete all fields with a valid email and phone number.'; return; }
     const d = new FormData(f);
-    const body = `${d.get('message')}\n\n— ${d.get('name')} (${d.get('email')})`;
+    const body = `${d.get('message')}\n\n— ${d.get('name')}\nPhone: ${d.get('phone')}\nEmail: ${d.get('email')}`;
     note.style.color = '';
     note.textContent = 'Opening your email app…';
     location.href = `mailto:info@mmc-agency.com?subject=${encodeURIComponent('Enquiry from ' + d.get('name'))}&body=${encodeURIComponent(body)}`;

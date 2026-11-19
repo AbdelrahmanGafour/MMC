@@ -49,15 +49,15 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .section--sage { background: var(--sage); }
 
 /* ============ Type ============ */
-.statement { font-family: var(--serif); font-weight: 400; font-size: clamp(26px, 3.6vw, 52px); line-height: 1.18; letter-spacing: -0.015em; text-align: center; max-width: 24em; margin-inline: auto; }
+.statement { white-space: normal; font-family: var(--serif); font-weight: 400; font-size: clamp(26px, 3.6vw, 52px); line-height: 1.18; letter-spacing: -0.015em; text-align: center; max-width: 24em; margin-inline: auto; }
 .statement--dark { color: var(--ink); }
 .statement--sm { font-size: clamp(30px, 4vw, 56px); }
 .statement em, .size-card h3 em, .offer-card h3 em, .cta-title em { font-style: italic; }
 .ul { text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .12em; }
 .hl--light { text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .12em; }
 .hl--accent { color: var(--accent); text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .12em; }
-.mark { display: block; margin: 0 auto 28px; color: var(--on-dark); }
-.mark--dark { color: var(--dark); }
+.mark { display: block; width: 56px; height: 56px; margin: 0 auto 24px; object-fit: contain; }
+.mark--badge { background: #fff; border-radius: 50%; padding: 8px; }
 mark { background: var(--accent); color: var(--dark); padding: 1px 10px; border-radius: 999px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 
 /* Reveal helpers */
@@ -223,7 +223,7 @@ mark { background: var(--accent); color: var(--dark); padding: 1px 10px; border-
 /* ============ Contact / CTA ============ */
 .contact { padding-bottom: clamp(64px, 9vw, 120px); }
 .contact__inner { padding-top: clamp(64px, 9vw, 120px); text-align: center; }
-.cta-title { font-family: var(--serif); font-weight: 400; font-size: clamp(40px, 7vw, 100px); line-height: 1.02; letter-spacing: -0.02em; margin-bottom: 20px; }
+.cta-title { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 5.4vw, 76px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 20px; }
 .cta-title em { color: var(--accent); }
 .cta-lead { color: var(--on-dark-dim); max-width: 46ch; margin: 0 auto clamp(40px, 6vw, 72px); font-size: 18px; }
 .contact__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 72px); text-align: left; align-items: stretch; }

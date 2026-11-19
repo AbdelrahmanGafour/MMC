@@ -3,7 +3,7 @@
   "short_name": "MMC Group",
   "start_url": "/",
   "display": "browser",
-  "background_color": "#070817",
-  "theme_color": "#070817",
+  "background_color": "#10142e",
+  "theme_color": "#10142e",
   "icons": [{ "src": "/images/logo-white.png", "sizes": "300x300", "type": "image/png" }]
 }

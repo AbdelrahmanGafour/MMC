@@ -1,5 +1,4 @@
-import '../css/base.css';
-import '../css/sections.css';
+import '../css/styles.css';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
@@ -21,8 +20,8 @@ if (!reduce) {
   gsap.ticker.add((t) => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
   lenis.stop();
+  gsap.set('.line > span', { yPercent: 110 });
 }
-if (!reduce) gsap.set('.line > span', { yPercent: 110 });
 
 /* ---------- Preloader ---------- */
 function preload() {
@@ -36,74 +35,45 @@ function preload() {
     ScrollTrigger.refresh();
   };
   if (reduce) return done();
-  const heroImg = $('.hero__media img');
-  const ready = new Promise((res) => (heroImg.complete ? res() : heroImg.addEventListener('load', res, { once: true })));
+  const img = $('.hero__bg img');
+  const ready = new Promise((res) => (img.complete ? res() : img.addEventListener('load', res, { once: true })));
   const tl = gsap.timeline();
-  tl.to(state, { n: 90, duration: 1.1, ease: 'power2.out', onUpdate: () => (count.textContent = Math.round(state.n)) });
+  tl.to(state, { n: 90, duration: 1, ease: 'power2.out', onUpdate: () => (count.textContent = Math.round(state.n)) });
   ready.then(() => tl.then(() => {
     gsap.to(state, { n: 100, duration: 0.3, onUpdate: () => (count.textContent = Math.round(state.n)) });
     gsap.to(pre, { yPercent: -100, duration: 0.9, delay: 0.35, ease: 'expo.inOut', onComplete: done });
   }));
 }
 
-/* ---------- Intro (hero) ---------- */
+/* ---------- Hero intro ---------- */
 function intro() {
   if (reduce) return;
-  const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-  tl.fromTo('.hero .line > span', { yPercent: 110 }, { yPercent: 0, duration: 1.4, stagger: 0.12 }, 0)
-    .to('.hero .reveal', { opacity: 1, y: 0, duration: 1.1, stagger: 0.12 }, 0.5)
-    .fromTo('.hero__media', { clipPath: 'inset(8% 8% 8% 8% round 32px)' }, { clipPath: 'inset(0% 0% 0% 0% round 32px)', duration: 1.8 }, 0);
+  gsap.timeline({ defaults: { ease: 'expo.out' } })
+    .fromTo('.hero .line > span', { yPercent: 110 }, { yPercent: 0, duration: 1.4, stagger: 0.14 }, 0)
+    .to('.hero .reveal', { opacity: 1, y: 0, duration: 1.1, stagger: 0.15 }, 0.4)
+    .fromTo('.hero__rings i', { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 2, stagger: 0.18 }, 0)
+    .fromTo('.float-photo', { scale: 0, rotate: -12 }, { scale: 1, rotate: 0, duration: 1.2, stagger: 0.15, ease: 'back.out(1.6)' }, 0.7);
 }
 
-/* ---------- Scroll reveals ---------- */
+/* ---------- Reveals ---------- */
 function reveals() {
   if (reduce) return;
-  $$('[data-split]').forEach((el) => {
-    if (el.closest('.hero')) return;
-    gsap.fromTo($$('.line > span', el), { yPercent: 110 }, {
-      yPercent: 0, duration: 1.2, ease: 'expo.out', stagger: 0.1,
-      scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-    });
-  });
   $$('.reveal').forEach((el) => {
     if (el.closest('.hero')) return;
-    gsap.to(el, { opacity: 1, y: 0, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
+    gsap.to(el, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
   });
 }
 
 /* ---------- Parallax ---------- */
 function parallax() {
   if (reduce) return;
-  gsap.to('.hero__media img', {
-    yPercent: 8, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+  gsap.to('.hero__bg', { yPercent: 12, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.to('.hero__content', { yPercent: -10, opacity: 0.1, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'center top', end: 'bottom top', scrub: true } });
+  $$('[data-float]').forEach((el) => {
+    gsap.to(el, { y: Number(el.dataset.float), ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   });
-  gsap.to('.hero__grid', {
-    yPercent: -12, opacity: 0.2, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'center top', end: 'bottom top', scrub: true },
-  });
-  const inner = $('[data-parallax-inner]');
-  if (inner) {
-    gsap.fromTo(inner, { yPercent: -6 }, {
-      yPercent: 6, ease: 'none',
-      scrollTrigger: { trigger: '.about__figure', start: 'top bottom', end: 'bottom top', scrub: true },
-    });
-  }
-}
-
-/* ---------- Horizontal scroll (Events) ---------- */
-function horizontal() {
-  const wrap = $('[data-hscroll]');
-  const track = $('.hscroll__track', wrap);
-  if (!wrap || reduce || matchMedia('(max-width: 900px)').matches) return;
-  wrap.classList.add('is-pinned');
-  const dist = () => track.scrollWidth - window.innerWidth;
-  gsap.to(track, {
-    x: () => -dist(), ease: 'none',
-    scrollTrigger: {
-      trigger: wrap, start: 'center center', end: () => `+=${dist()}`,
-      pin: true, scrub: 0.6, invalidateOnRefresh: true, anticipatePin: 1,
-    },
+  $$('.tile img').forEach((img) => {
+    gsap.fromTo(img, { yPercent: -5 }, { yPercent: 5, ease: 'none', scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: true } });
   });
 }
 
@@ -115,19 +85,16 @@ function header() {
     start: 0, end: 'max',
     onUpdate: (self) => {
       const y = self.scroll();
-      h.classList.toggle('is-scrolled', y > 40);
-      h.classList.toggle('is-hidden', y > last && y > 400 && !$('.nav').classList.contains('is-open'));
+      h.classList.toggle('is-hidden', y > last && y > 500 && !$('.nav').classList.contains('is-open'));
       last = y;
     },
   });
-  // active link
   $$('main section[id]').forEach((sec) => {
     ScrollTrigger.create({
       trigger: sec, start: 'top 55%', end: 'bottom 55%',
       onToggle: (s) => s.isActive && $$('[data-nav]').forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === `#${sec.id}`)),
     });
   });
-  // mobile menu
   const burger = $('.burger');
   const nav = $('#nav');
   const toggle = (open) => {
@@ -139,7 +106,6 @@ function header() {
   };
   burger.addEventListener('click', () => toggle(burger.getAttribute('aria-expanded') !== 'true'));
   addEventListener('keydown', (e) => e.key === 'Escape' && toggle(false));
-  // anchor scrolling
   $$('a[href^="#"]').forEach((a) =>
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
@@ -147,31 +113,23 @@ function header() {
       if (target === null) return;
       e.preventDefault();
       toggle(false);
-      lenis ? lenis.scrollTo(target, { offset: id === '#top' ? 0 : -40, duration: 1.4 }) : (target === 0 ? scrollTo(0, 0) : target.scrollIntoView());
+      lenis ? lenis.scrollTo(target, { offset: id === '#top' ? 0 : -20, duration: 1.4 }) : (target === 0 ? scrollTo(0, 0) : target.scrollIntoView());
     }));
 }
 
-/* ---------- Cursor + magnetic + service preview ---------- */
-function thumbs() {
-  $$('.svc-list li').forEach((li) => {
-    const t = document.createElement('img');
-    t.className = 'thumb'; t.alt = ''; t.loading = 'lazy'; t.width = 56; t.height = 56;
-    t.src = `/images/${li.dataset.img}-800.webp`;
-    li.insertBefore(t, li.firstChild);
-  });
+/* ---------- Carousel ---------- */
+function carousel() {
+  const c = $('[data-carousel]');
+  if (!c) return;
+  const track = $('.carousel__track', c);
+  const step = () => $('.offer-card', track).getBoundingClientRect().width + 24;
+  $('[data-prev]', c).addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+  $('[data-next]', c).addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
 }
 
-function pointer() {
+/* ---------- Magnetic buttons ---------- */
+function magnetic() {
   if (!fine || reduce) return;
-  const cur = $('.cursor');
-  const xTo = gsap.quickTo(cur, 'x', { duration: 0.25, ease: 'power3' });
-  const yTo = gsap.quickTo(cur, 'y', { duration: 0.25, ease: 'power3' });
-  addEventListener('pointermove', (e) => { cur.classList.add('is-on'); xTo(e.clientX); yTo(e.clientY); });
-  $$('a, button, summary, .svc-list li').forEach((el) => {
-    el.addEventListener('pointerenter', () => cur.classList.add('is-big'));
-    el.addEventListener('pointerleave', () => cur.classList.remove('is-big'));
-  });
-
   $$('[data-magnetic]').forEach((el) => {
     const mx = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power3' });
     const my = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power3' });
@@ -182,23 +140,9 @@ function pointer() {
     });
     el.addEventListener('pointerleave', () => { mx(0); my(0); });
   });
-
-  const prev = $('.svc-preview');
-  const img = $('img', prev);
-  const px = gsap.quickTo(prev, 'x', { duration: 0.5, ease: 'power3' });
-  const py = gsap.quickTo(prev, 'y', { duration: 0.5, ease: 'power3' });
-  gsap.set(prev, { xPercent: 0, yPercent: 0 });
-  $$('.svc-list li').forEach((li) => {
-    li.addEventListener('pointerenter', () => {
-      img.src = `/images/${li.dataset.img}-800.webp`;
-      gsap.to(prev, { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' });
-    });
-    li.addEventListener('pointermove', (e) => { px(e.clientX + 40); py(e.clientY); });
-    li.addEventListener('pointerleave', () => gsap.to(prev, { opacity: 0, scale: 0.85, duration: 0.4 }));
-  });
 }
 
-/* ---------- Enquiry form (mailto — no backend) ---------- */
+/* ---------- Enquiry form (mailto, no backend) ---------- */
 function form() {
   const f = $('#enquiry');
   const note = $('.form__note', f);
@@ -220,12 +164,11 @@ function form() {
 }
 
 $('[data-year]').textContent = new Date().getFullYear();
-thumbs();
 reveals();
 parallax();
-horizontal();
 header();
-pointer();
+carousel();
+magnetic();
 form();
 preload();
 addEventListener('load', () => ScrollTrigger.refresh());

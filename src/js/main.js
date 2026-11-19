@@ -52,7 +52,7 @@ function intro() {
   const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
   tl.fromTo('.hero .line > span', { yPercent: 110 }, { yPercent: 0, duration: 1.4, stagger: 0.12 }, 0)
     .to('.hero .reveal', { opacity: 1, y: 0, duration: 1.1, stagger: 0.12 }, 0.5)
-    .fromTo('.hero__media img', { scale: 1.15 }, { scale: 1, duration: 2.2 }, 0);
+    .fromTo('.hero__media', { clipPath: 'inset(8% 8% 8% 8% round 32px)' }, { clipPath: 'inset(0% 0% 0% 0% round 32px)', duration: 1.8 }, 0);
 }
 
 /* ---------- Scroll reveals ---------- */
@@ -74,8 +74,8 @@ function reveals() {
 /* ---------- Parallax ---------- */
 function parallax() {
   if (reduce) return;
-  gsap.to('.hero__media', {
-    yPercent: 14, ease: 'none',
+  gsap.to('.hero__media img', {
+    yPercent: 8, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
   });
   gsap.to('.hero__grid', {
@@ -152,6 +152,15 @@ function header() {
 }
 
 /* ---------- Cursor + magnetic + service preview ---------- */
+function thumbs() {
+  $$('.svc-list li').forEach((li) => {
+    const t = document.createElement('img');
+    t.className = 'thumb'; t.alt = ''; t.loading = 'lazy'; t.width = 56; t.height = 56;
+    t.src = `/images/${li.dataset.img}-800.webp`;
+    li.insertBefore(t, li.firstChild);
+  });
+}
+
 function pointer() {
   if (!fine || reduce) return;
   const cur = $('.cursor');
@@ -211,6 +220,7 @@ function form() {
 }
 
 $('[data-year]').textContent = new Date().getFullYear();
+thumbs();
 reveals();
 parallax();
 horizontal();

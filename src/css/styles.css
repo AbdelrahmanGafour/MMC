@@ -129,9 +129,10 @@ mark { background: var(--accent); color: var(--dark); padding: 1px 10px; border-
 /* ============ Marquee ============ */
 .marquee { background: var(--dark); border-block: 1px solid var(--line-dark); overflow: hidden; padding-block: 18px; }
 .marquee--flush { border-top: 0; }
-.marquee__track { display: flex; align-items: center; gap: 12px; width: max-content; animation: marquee 40s linear infinite; padding-right: 12px; }
-.m-pill { padding: 12px 26px; border: 1px solid var(--line-dark); border-radius: 999px; font-size: clamp(18px, 2vw, 26px); color: var(--on-dark); white-space: nowrap; }
-.m-arrow { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--line-dark); border-radius: 50%; color: var(--on-dark); flex: none; }
+.marquee__track { display: flex; align-items: center; gap: 12px; width: max-content; animation: marquee 80s linear infinite; padding-right: 12px; }
+.m-pill { display: inline-flex; align-items: center; gap: 14px; padding: 10px 26px 10px 12px; border: 1px solid var(--line-dark); border-radius: 999px; font-size: clamp(16px, 1.6vw, 22px); color: var(--on-dark); white-space: nowrap; transition: border-color .3s, background .3s; }
+.m-pill i { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: var(--dark); font-size: 16px; flex: none; }
+.m-pill:hover { border-color: var(--accent); background: rgba(46, 211, 189, .08); }
 @keyframes marquee { to { transform: translateX(-50%); } }
 .marquee:hover .marquee__track { animation-play-state: paused; }
 

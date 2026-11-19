@@ -64,6 +64,7 @@ mark { background: var(--accent); color: var(--dark); padding: 1px 10px; border-
 .line { display: block; overflow: hidden; padding-bottom: .1em; margin-bottom: -.1em; }
 .line > span { display: block; will-change: transform; }
 .js .reveal { opacity: 0; transform: translateY(36px); }
+.js .hero__content { visibility: hidden; }
 
 /* ============ Buttons ============ */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 13px 26px; border-radius: 999px; border: 1px solid transparent; font-weight: 500; font-size: 15px; line-height: 1.2; transition: background .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease), transform .35s var(--ease); will-change: transform; }
@@ -76,13 +77,6 @@ mark { background: var(--accent); color: var(--dark); padding: 1px 10px; border-
 .round-btn:hover { transform: rotate(-45deg) scale(1.06); }
 .round-btn--dark { background: var(--dark); color: var(--on-dark); width: 56px; height: 56px; font-size: 24px; }
 .round-btn--dark:hover { transform: scale(1.08); background: var(--accent-deep); }
-
-/* ============ Preloader ============ */
-.preloader { position: fixed; inset: 0; z-index: 400; background: var(--light); display: grid; place-items: center; }
-.preloader__inner { display: grid; justify-items: center; gap: 18px; }
-.preloader__inner img { width: 160px; height: auto; animation: pulse 1.6s ease-in-out infinite; }
-.preloader__count { font-family: var(--serif); font-size: 30px; font-variant-numeric: tabular-nums; color: var(--accent-deep); }
-@keyframes pulse { 50% { transform: scale(1.06); opacity: .75; } }
 
 /* ============ Header (floating pill) ============ */
 .site-header { position: fixed; z-index: 200; top: 16px; left: clamp(12px, 1.6vw, 24px); right: clamp(12px, 1.6vw, 24px); height: 76px; padding: 0 16px 0 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; background: rgba(16, 20, 46, .94); backdrop-filter: blur(14px); border-radius: 999px; color: var(--on-dark); transition: transform .6s var(--ease); }
@@ -264,4 +258,5 @@ mark { background: var(--accent); color: var(--dark); padding: 1px 10px; border-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
   .js .reveal { transform: none !important; opacity: 1 !important; }
+  .js .hero__content { visibility: visible; }
 }

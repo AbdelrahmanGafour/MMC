@@ -23,31 +23,25 @@ if (!reduce) {
   gsap.set('.line > span', { yPercent: 110 });
 }
 
-/* ---------- Preloader ---------- */
-function preload() {
-  const pre = $('.preloader');
-  const count = $('[data-count]');
-  const state = { n: 0 };
-  const done = () => {
-    pre.remove();
+/* ---------- Start: wait briefly for fonts + hero image, then play intro ---------- */
+function start() {
+  const hero = $('.hero__content');
+  if (reduce) { hero.style.visibility = 'visible'; return; }
+  const img = $('.hero__bg img');
+  const imgReady = img.complete ? Promise.resolve() : new Promise((r) => img.addEventListener('load', r, { once: true }));
+  const fontsReady = document.fonts?.ready ?? Promise.resolve();
+  const timeout = new Promise((r) => setTimeout(r, 1200));
+  Promise.race([Promise.all([fontsReady, imgReady]), timeout]).then(() => {
     lenis?.start();
     intro();
     ScrollTrigger.refresh();
-  };
-  if (reduce) return done();
-  const img = $('.hero__bg img');
-  const ready = new Promise((res) => (img.complete ? res() : img.addEventListener('load', res, { once: true })));
-  const tl = gsap.timeline();
-  tl.to(state, { n: 90, duration: 1, ease: 'power2.out', onUpdate: () => (count.textContent = Math.round(state.n)) });
-  ready.then(() => tl.then(() => {
-    gsap.to(state, { n: 100, duration: 0.3, onUpdate: () => (count.textContent = Math.round(state.n)) });
-    gsap.to(pre, { yPercent: -100, duration: 0.9, delay: 0.35, ease: 'expo.inOut', onComplete: done });
-  }));
+  });
 }
 
 /* ---------- Hero intro ---------- */
 function intro() {
-  if (reduce) return;
+  gsap.set('.hero .line > span', { yPercent: 110 });
+  $('.hero__content').style.visibility = 'visible';
   gsap.timeline({ defaults: { ease: 'expo.out' } })
     .fromTo('.hero .line > span', { yPercent: 110 }, { yPercent: 0, duration: 1.4, stagger: 0.14 }, 0)
     .to('.hero .reveal', { opacity: 1, y: 0, duration: 1.1, stagger: 0.15 }, 0.4)
@@ -170,5 +164,5 @@ header();
 carousel();
 magnetic();
 form();
-preload();
+start();
 addEventListener('load', () => ScrollTrigger.refresh());

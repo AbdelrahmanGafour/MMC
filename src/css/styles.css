@@ -253,6 +253,9 @@ mark { background: var(--accent); color: var(--dark); padding: 1px 10px; border-
 .footer__row nav a { color: var(--on-dark-dim); transition: color .3s; }
 .footer__row nav a:hover { color: var(--accent); }
 .footer__legal { margin-top: 28px; color: var(--on-dark-dim); font-size: 13px; }
+.footer__legal .sep { margin-inline: 8px; opacity: .5; }
+.footer__legal a { color: var(--accent); transition: color .3s; }
+.footer__legal a:hover { color: var(--accent-soft); }
 
 @media (max-width: 800px) {
   .float-photo { display: none; }
